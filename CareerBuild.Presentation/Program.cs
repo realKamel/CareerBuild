@@ -1,36 +1,55 @@
+using DataAccess.Data.Contexts;
+using Microsoft.EntityFrameworkCore;
+
 namespace CareerBuild.Presentation
 {
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+	public class Program
+	{
+		public static void Main(string[] args)
+		{
+			var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
-            builder.Services.AddControllersWithViews();
+			#region Add services to the container.
+			// Add services to the container.
+			builder.Services.AddControllersWithViews();
 
-            var app = builder.Build();
+			//we need to add DBContext to DI Container
+			builder.Services.AddDbContext<CareerBuildDbContext>(
+			(options) =>
+			{
+				options.UseSqlServer(builder.Configuration
+					.GetConnectionString("DefaultConnection"));
+			});
 
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
 
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
+			//and other service to be added to the DI Container
+			#endregion
 
-            app.UseRouting();
+			var app = builder.Build();
 
-            app.UseAuthorization();
+			// Configure the HTTP request pipeline.
+			if (!app.Environment.IsDevelopment())
+			{
+				app.UseExceptionHandler("/Home/Error");
+				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+				app.UseHsts();
+			}
 
-            app.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+			//To use HTTPS
+			app.UseHttpsRedirection();
 
-            app.Run();
-        }
-    }
+			//To make sure every static file is loaded if we used them in the routing
+			app.UseStaticFiles();
+
+			app.UseRouting();
+
+			app.UseAuthorization();
+
+			app.MapControllerRoute(
+				name: "default",
+				pattern: "{controller=Home}/{action=Index}/{id?}");
+
+			app.Run();
+		}
+	}
 }
