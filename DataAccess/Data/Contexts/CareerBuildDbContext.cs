@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Data.Contexts
+namespace CareerBuild.DataAccess.Data.Contexts
 {
 	//To make this work with DI
 	public class CareerBuildDbContext(DbContextOptions<CareerBuildDbContext> contextOptions)

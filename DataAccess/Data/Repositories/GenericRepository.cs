@@ -1,4 +1,5 @@
-﻿using DataAccess.Data.Contexts;
+﻿using CareerBuild.DataAccess.Data.Contexts;
+using DataAccess.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Data.Repositories
+namespace CareerBuild.DataAccess.Data.Repositories
 {
 	public class GenericRepository<T>(CareerBuildDbContext _dbContext)
 		: IGenericRepository<T> where T : class
